@@ -1,0 +1,46 @@
+/* Wallfred — thumbnail grid styling */
+
+.wallfred-thumb-grid {
+    padding: 8px;
+}
+
+.wallfred-thumb {
+    padding: 3px;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    transition-duration: 150ms;
+}
+
+.wallfred-thumb:hover {
+    border-color: rgba(255, 255, 255, 0.6);
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+.wallfred-thumb:focus {
+    border-color: #78aeed;
+    background-color: rgba(120, 174, 237, 0.15);
+}
+
+/* The wallpaper currently applied to the desktop. */
+.wallfred-thumb-selected {
+    border-color: #78aeed;
+}
+
+/* "Most used" section */
+.wallfred-section-header {
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.wallfred-fav-grid {
+    padding: 4px 8px 8px 8px;
+}
+
+.wallfred-fav-item {
+    spacing: 2px;
+}
+
+.wallfred-fav-count {
+    font-size: 0.8em;
+    color: rgba(255, 255, 255, 0.7);
+}

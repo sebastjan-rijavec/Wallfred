@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.gnome.shell.extensions.wallfred"
+          path="/org/gnome/shell/extensions/wallfred/">
+
+    <key name="carousel-dir" type="s">
+      <default>''</default>
+      <summary>Wallpaper folder</summary>
+      <description>
+        Folder scanned for wallpaper images (*.png, *.jpg, *.jpeg).
+        When empty, Wallfred falls back to ~/Pictures/Wallpapers.
+      </description>
+    </key>
+
+    <key name="interval-minutes" type="i">
+      <range min="1" max="60"/>
+      <default>30</default>
+      <summary>Rotation interval in minutes</summary>
+      <description>
+        How often the wallpaper changes when rotation is enabled.
+        Constrained to whole minutes, 1 through 60.
+      </description>
+    </key>
+
+    <key name="rotate-enabled" type="b">
+      <default>false</default>
+      <summary>Enable automatic rotation</summary>
+      <description>
+        When true, a GLib timer changes the wallpaper every
+        interval-minutes. When false, only manual picks apply.
+      </description>
+    </key>
+
+    <key name="shuffle" type="b">
+      <default>true</default>
+      <summary>Shuffle order</summary>
+      <description>
+        Random order, avoiding an immediate repeat of the current
+        wallpaper, when true; alphabetical by filename when false.
+      </description>
+    </key>
+
+    <key name="usage-stats" type="a{su}">
+      <default>{}</default>
+      <summary>Per-wallpaper selection counts</summary>
+      <description>
+        Maps each wallpaper file path to how many times it has been
+        explicitly chosen (clicked). Automatic rotations do not count.
+      </description>
+    </key>
+
+    <key name="usage-last" type="a{sx}">
+      <default>{}</default>
+      <summary>Per-wallpaper last-chosen time</summary>
+      <description>
+        Maps each wallpaper file path to the Unix time (seconds) it was
+        last chosen. Used to break ties when ranking by frequency.
+      </description>
+    </key>
+
+  </schema>
+</schemalist>

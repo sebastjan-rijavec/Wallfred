@@ -1,0 +1,8 @@
+# Compiled GSettings schema (built from schemas/*.gschema.xml)
+schemas/gschemas.compiled
+
+# gnome-extensions pack output
+dist/
+
+# throwaway XDG profile for the nested test session (gnome-ext.sh test)
+.dev-home/

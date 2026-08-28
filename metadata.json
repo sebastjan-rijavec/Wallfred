@@ -1,0 +1,10 @@
+{
+  "uuid": "wallfred@sebastjan-rijavec.github.io",
+  "name": "Wallfred",
+  "description": "A tidy valet for your desktop. Pick a wallpaper from a thumbnail grid, or let Wallfred rotate through a folder every 1–60 minutes — and he quietly remembers the ones you choose most. Sets org.gnome.desktop.background (picture-uri / picture-uri-dark): no root, instant, no restart.",
+  "shell-version": ["45", "46", "47"],
+  "settings-schema": "org.gnome.shell.extensions.wallfred",
+  "gettext-domain": "wallfred",
+  "url": "https://github.com/sebastjan-rijavec/Wallfred",
+  "version": 1
+}
