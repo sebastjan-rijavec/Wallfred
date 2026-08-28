@@ -74,10 +74,18 @@ class IntervalItem extends PopupMenu.PopupBaseMenuItem {
                 this._slider.value = v;
         });
 
-        this.connect('destroy', () => {
-            if (this._settingChangedId)
-                this._settings.disconnect(this._settingChangedId);
-        });
+    }
+
+    destroy() {
+        if (this._sliderChangedId) {
+            this._slider.disconnect(this._sliderChangedId);
+            this._sliderChangedId = null;
+        }
+        if (this._settingChangedId) {
+            this._settings.disconnect(this._settingChangedId);
+            this._settingChangedId = null;
+        }
+        super.destroy();
     }
 
     _toMinutes(value) {
@@ -129,9 +137,13 @@ class Indicator extends PanelMenu.Button {
 
         // --- Rotate on/off -------------------------------------------------
         this._rotateSwitch = new PopupMenu.PopupSwitchMenuItem(
-            'Rotate wallpaper', this._settings.get_boolean('rotate-enabled'));
-        this._settings.bind('rotate-enabled', this._rotateSwitch, 'state',
-            Gio.SettingsBindFlags.DEFAULT);
+            'Rotate Wallpaper', this._settings.get_boolean('rotate-enabled'));
+        // PopupSwitchMenuItem exposes no bindable 'state' *property*, so wire
+        // the toggle to the GSetting by hand instead of Gio.Settings.bind().
+        this._rotateSwitch.connect('toggled', (_item, state) => {
+            if (this._settings.get_boolean('rotate-enabled') !== state)
+                this._settings.set_boolean('rotate-enabled', state);
+        });
         this.menu.addMenuItem(this._rotateSwitch);
 
         // --- Interval 1–60 min --------------------------------------------
@@ -139,15 +151,22 @@ class Indicator extends PanelMenu.Button {
 
         // --- Shuffle vs sequential ----------------------------------------
         this._shuffleSwitch = new PopupMenu.PopupSwitchMenuItem(
-            'Shuffle order', this._settings.get_boolean('shuffle'));
-        this._settings.bind('shuffle', this._shuffleSwitch, 'state',
-            Gio.SettingsBindFlags.DEFAULT);
+            'Shuffle Order', this._settings.get_boolean('shuffle'));
+        this._shuffleSwitch.connect('toggled', (_item, state) => {
+            if (this._settings.get_boolean('shuffle') !== state)
+                this._settings.set_boolean('shuffle', state);
+        });
+        this._shuffleChangedId = this._settings.connect('changed::shuffle', () => {
+            const on = this._settings.get_boolean('shuffle');
+            if (this._shuffleSwitch.state !== on)
+                this._shuffleSwitch.setToggleState(on);
+        });
         this.menu.addMenuItem(this._shuffleSwitch);
 
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
         // --- Manual advance -----------------------------------------------
-        const nextItem = new PopupMenu.PopupMenuItem('Next wallpaper now');
+        const nextItem = new PopupMenu.PopupMenuItem('Next Wallpaper Now');
         nextItem.connect('activate', () => this._rotate());
         this.menu.addMenuItem(nextItem);
 
@@ -156,7 +175,7 @@ class Indicator extends PanelMenu.Button {
         this.menu.addMenuItem(this._listSub);
 
         // Refresh the "Most used" row and the full grid when the menu opens.
-        this.menu.connect('open-state-changed', (_m, open) => {
+        this._menuStateId = this.menu.connect('open-state-changed', (_m, open) => {
             if (open) {
                 this._rebuildFavorites();
                 this._rebuildList();
@@ -165,7 +184,7 @@ class Indicator extends PanelMenu.Button {
 
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
-        const prefsItem = new PopupMenu.PopupMenuItem('Settings…');
+        const prefsItem = new PopupMenu.PopupMenuItem('Settings');
         prefsItem.connect('activate', () => this._ext.openPreferences());
         this.menu.addMenuItem(prefsItem);
 
@@ -322,7 +341,7 @@ class Indicator extends PanelMenu.Button {
         if (top.length === 0)
             return;
 
-        const header = new PopupMenu.PopupMenuItem('Most used', {
+        const header = new PopupMenu.PopupMenuItem('Most Used', {
             reactive: false,
             can_focus: false,
         });
@@ -465,7 +484,11 @@ class Indicator extends PanelMenu.Button {
     }
 
     _onEnabledChanged() {
-        if (this._settings.get_boolean('rotate-enabled')) {
+        const on = this._settings.get_boolean('rotate-enabled');
+        // Keep the menu switch in step with changes made elsewhere (prefs).
+        if (this._rotateSwitch.state !== on)
+            this._rotateSwitch.setToggleState(on);
+        if (on) {
             this._rotate();          // immediate feedback when turned on
             this._restartTimer();
         } else {
@@ -481,12 +504,19 @@ class Indicator extends PanelMenu.Button {
 
     destroy() {
         this._stopTimer();
+        if (this._menuStateId) {
+            this.menu.disconnect(this._menuStateId);
+            this._menuStateId = null;
+        }
         if (this._enabledChangedId)
             this._settings.disconnect(this._enabledChangedId);
         if (this._intervalChangedId)
             this._settings.disconnect(this._intervalChangedId);
+        if (this._shuffleChangedId)
+            this._settings.disconnect(this._shuffleChangedId);
         this._enabledChangedId = null;
         this._intervalChangedId = null;
+        this._shuffleChangedId = null;
         super.destroy();
     }
 });

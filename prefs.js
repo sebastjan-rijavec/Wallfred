@@ -18,8 +18,8 @@ export default class WallfredPrefs extends ExtensionPreferences {
             icon_name: 'preferences-desktop-wallpaper-symbolic',
         });
         const group = new Adw.PreferencesGroup({
-            title: 'Wallpaper carousel',
-            description: 'Rotate through a folder of wallpapers every 1–60 minutes.',
+            title: 'Wallpaper Carousel',
+            description: 'Rotate through a folder of wallpapers every 1–60 minutes',
         });
         page.add(group);
 
@@ -34,7 +34,7 @@ export default class WallfredPrefs extends ExtensionPreferences {
         });
         browse.add_css_class('flat');
         browse.connect('clicked', () => {
-            const dialog = new Gtk.FileDialog({title: 'Choose wallpaper folder'});
+            const dialog = new Gtk.FileDialog({title: 'Choose Wallpaper Folder'});
             dialog.select_folder(window, null, (dlg, res) => {
                 try {
                     const folder = dlg.select_folder_finish(res);
@@ -86,8 +86,8 @@ export default class WallfredPrefs extends ExtensionPreferences {
 
         // --- Usage statistics ---------------------------------------------
         const statsGroup = new Adw.PreferencesGroup({
-            title: 'Usage statistics',
-            description: 'The panel menu surfaces your most-chosen wallpapers.',
+            title: 'Usage Statistics',
+            description: 'The panel menu surfaces your most-chosen wallpapers',
         });
         page.add(statsGroup);
 

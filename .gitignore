@@ -6,3 +6,6 @@ dist/
 
 # throwaway XDG profile for the nested test session (gnome-ext.sh test)
 .dev-home/
+
+# Python venv for shexli (EGO uploader) — dev tooling, not shipped
+.venv/
