@@ -77,3 +77,6 @@ falls back to `~/Pictures/Wallpapers`.
 Made to show off recoloured SGI IRIX pattern tiles from
 [IRIX-wallpaper-tiles](https://github.com/sebastjan-rijavec/IRIX-wallpaper-tiles),
 but Wallfred is happy to serve any folder of images.
+
+Thanks to [@alexey-pelykh](https://github.com/alexey-pelykh) for inspiring me to
+eat tuna with a fork.
