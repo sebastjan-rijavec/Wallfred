@@ -2,6 +2,8 @@
 
 *Your desktop's wallpaper valet.*
 
+![Wallfred's panel menu: a Most Used thumbnail row, Rotate Wallpaper and Shuffle Order switches, an interval slider, and a Wallpapers submenu, over a desktop wallpaper](docs/screenshot.png)
+
 Wallfred is a GNOME Shell extension that puts a small grid icon in the top
 panel. Click it and he presents your wallpapers as thumbnails; pick one and
 it's on the desktop at once. Ask him to, and he'll quietly rotate through a
